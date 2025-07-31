@@ -55,7 +55,7 @@ export const ChatInterface = ({ onBack, initialMessage }: ChatInterfaceProps) =>
 
     try {
       // Simulate API call for now - replace with actual endpoint
-      const response = await fetch('https://satvik-ai-railway-production.up.railway.app/ask', {
+      const response = await fetch('https://satvik-ai-railway-production.up.railway.app/api/ask', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: messageContent })
@@ -69,7 +69,7 @@ export const ChatInterface = ({ onBack, initialMessage }: ChatInterfaceProps) =>
       
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: data.answer || "I'm sorry, I couldn't process that request. I'd recommend booking a call with Satvik to discuss this directly. Schedule at: [Calendly placeholder]",
+        content: data.answer || "I'm sorry, I couldn't process that request. I'd recommend booking a call with Satvik to discuss this directly. Schedule at: https://calendly.com/satvikputi/brainstorming",
         isUser: false,
         timestamp: new Date(),
       };
