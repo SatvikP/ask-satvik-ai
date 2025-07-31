@@ -55,7 +55,7 @@ export const ChatInterface = ({ onBack, initialMessage }: ChatInterfaceProps) =>
 
     try {
       // Simulate API call for now - replace with actual endpoint
-      const response = await fetch('/api/ask', {
+      const response = await fetch('https://satvik-ai-backend-o9s2.vercel.app/api/ask', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: messageContent })
