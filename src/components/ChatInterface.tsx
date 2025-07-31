@@ -102,7 +102,7 @@ export const ChatInterface = ({ onBack, initialMessage }: ChatInterfaceProps) =>
     const lowerQuestion = question.toLowerCase();
     
     if (lowerQuestion.includes("company") || lowerQuestion.includes("value")) {
-      return "I'd love to learn more about your company first! Could you tell me about your industry, stage, and key challenges? Based on that, I can explain how Satvik's experience in strategy, operations, and business development could create specific value for your organization. His track record includes scaling businesses, optimizing operations, and driving strategic initiatives.\n\nFor a detailed discussion tailored to your company's needs, I'd recommend booking a call with Satvik directly. Schedule at: [Calendly placeholder]";
+      return "I'd love to learn more about your company first! Could you tell me about your industry, stage, and key challenges? Based on that, I can explain how Satvik's experience in strategy, operations, and business development could create specific value for your organization. His track record includes scaling businesses, optimizing operations, and driving strategic initiatives.\n\nFor a detailed discussion tailored to your company's needs, I'd recommend booking a call with Satvik directly. Schedule at: https://calendly.com/satvikputi/brainstorming";
     }
     
     if (lowerQuestion.includes("values")) {
@@ -113,7 +113,7 @@ export const ChatInterface = ({ onBack, initialMessage }: ChatInterfaceProps) =>
       return "When Satvik isn't working, you'll find him:\n\n🏃‍♂️ **Staying Active**: Regular workouts, hiking, and exploring new fitness challenges\n📚 **Continuous Learning**: Reading business books, industry reports, and staying current with trends\n🌍 **Exploring**: Traveling to new places and experiencing different cultures\n🍳 **Cooking**: Experimenting with new recipes and cuisines\n👥 **Connecting**: Spending quality time with family and friends\n\nHe believes in maintaining a healthy work-life balance to bring fresh perspectives and energy to his professional endeavors.";
     }
     
-    return "That's a great question! While I have extensive information about Satvik's professional background and experience, I'd recommend discussing this specific topic directly with him for the most comprehensive answer.\n\nI'd recommend booking a call with Satvik to discuss this directly. Schedule at: [Calendly placeholder]";
+    return "That's a great question! While I have extensive information about Satvik's professional background and experience, I'd recommend discussing this specific topic directly with him for the most comprehensive answer.\n\nI'd recommend booking a call with Satvik to discuss this directly. Schedule at: https://calendly.com/satvikputi/brainstorming";
   };
 
   const handleSubmit = (e: React.FormEvent) => {
