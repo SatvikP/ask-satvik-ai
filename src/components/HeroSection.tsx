@@ -35,7 +35,7 @@ export const HeroSection = ({ onStartChat }: HeroSectionProps) => {
           <div className="flex items-center justify-center gap-6 mb-6">
             <Avatar className="w-20 h-20 md:w-24 md:h-24 border-2 border-primary-foreground/30">
               <AvatarImage 
-                src="https://images.unsplash.com/photo-1581092795360-fd1ca064f0952" 
+                src="/lovable-uploads/f5679b52-2922-4b12-8388-934ab719d6ee.png" 
                 alt="Satvik Puti" 
                 className="object-cover"
               />
