@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { MessageCircle, Sparkles } from "lucide-react";
 
 interface HeroSectionProps {
@@ -31,10 +32,22 @@ export const HeroSection = ({ onStartChat }: HeroSectionProps) => {
             <span className="text-primary-foreground font-medium">AI-Powered Professional Assistant</span>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-bold text-primary-foreground mb-6 leading-tight">
-            Ask Satvik
-            <span className="block text-4xl md:text-6xl">Anything</span>
-          </h1>
+          <div className="flex items-center justify-center gap-6 mb-6">
+            <Avatar className="w-20 h-20 md:w-24 md:h-24 border-2 border-primary-foreground/30">
+              <AvatarImage 
+                src="https://images.unsplash.com/photo-1581092795360-fd1ca064f0952" 
+                alt="Satvik Puti" 
+                className="object-cover"
+              />
+              <AvatarFallback className="text-2xl font-bold bg-primary-foreground/20 text-primary-foreground">
+                SP
+              </AvatarFallback>
+            </Avatar>
+            <h1 className="text-5xl md:text-7xl font-bold text-primary-foreground leading-tight">
+              Ask Satvik
+              <span className="block text-4xl md:text-6xl">Anything</span>
+            </h1>
+          </div>
           
           <div className="flex items-center justify-center gap-2 mb-8">
             <MessageCircle className="w-6 h-6 text-primary-foreground/80" />
