@@ -7,7 +7,7 @@ interface HeroSectionProps {
 
 const starterQuestions = [
   {
-    text: "Tell me about your company, and how can Satvik create value for you?",
+    text: "Tell me something about Satvik",
     icon: "💼",
   },
   {
