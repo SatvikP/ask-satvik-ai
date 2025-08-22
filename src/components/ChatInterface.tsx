@@ -115,19 +115,16 @@ export const ChatInterface = ({ onBack, initialMessage }: ChatInterfaceProps) =>
     await saveMessageToDatabase(messageContent, true);
 
     try {
-      // Simulate API call for now - replace with actual endpoint
-      const response = await fetch('https://satvik-ai-railway-production.up.railway.app/api/ask', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: messageContent })
+      // Call Supabase edge function
+      const response = await supabase.functions.invoke('ask-satvik-enhanced', {
+        body: { question: messageContent }
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to get response');
+      if (response.error) {
+        throw new Error(response.error.message || 'Failed to get response');
       }
 
-      const data = await response.json();
-      const aiResponse = data.answer || "I'm sorry, I couldn't process that request. I'd recommend booking a call with Satvik to discuss this directly. Schedule at: https://calendly.com/satvikputi/brainstorming";
+      const aiResponse = response.data?.answer || "I'm sorry, I couldn't process that request. I'd recommend booking a call with Satvik to discuss this directly. Schedule at: https://calendly.com/satvikputi/brainstorming";
       
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
