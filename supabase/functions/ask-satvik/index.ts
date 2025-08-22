@@ -97,7 +97,7 @@ serve(async (req) => {
 
     logInfo('ANTHROPIC_REQUEST_START', { 
       questionLength: question.length,
-      model: 'claude-3-5-sonnet-20241022',
+      model: 'claude-sonnet-4-20250514',
       systemPromptLength: systemPrompt.length
     });
 
@@ -110,7 +110,7 @@ serve(async (req) => {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-3-5-sonnet-20241022',
+        model: 'claude-sonnet-4-20250514',
         max_tokens: 500,
         system: systemPrompt,
         messages: [
@@ -134,7 +134,7 @@ serve(async (req) => {
         status: anthropicResponse.status,
         statusText: anthropicResponse.statusText,
         errorResponse: errorText,
-        requestModel: 'claude-3-5-sonnet-20241022'
+        requestModel: 'claude-sonnet-4-20250514'
       });
       throw new Error(`Anthropic API error: ${anthropicResponse.status} - ${errorText}`);
     }
