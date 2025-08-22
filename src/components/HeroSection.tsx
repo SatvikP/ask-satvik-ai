@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { MessageCircle, Sparkles } from "lucide-react";
+import { MessageCircle, Sparkles, LogOut } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 interface HeroSectionProps {
   onStartChat: (message?: string) => void;
@@ -22,8 +23,27 @@ const starterQuestions = [
 ];
 
 export const HeroSection = ({ onStartChat }: HeroSectionProps) => {
+  const { user, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
+
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4 font-times">
+      {/* Sign out button */}
+      <div className="absolute top-4 right-4">
+        <Button
+          variant="outline" 
+          size="sm"
+          onClick={handleSignOut}
+          className="bg-white text-black border border-gray-300 hover:bg-gray-50"
+        >
+          <LogOut className="w-4 h-4 mr-2" />
+          Sign Out
+        </Button>
+      </div>
+
       <div className="max-w-4xl mx-auto text-center">
         {/* Hero Content */}
         <div className="mb-12 animate-fade-in">
@@ -97,6 +117,9 @@ export const HeroSection = ({ onStartChat }: HeroSectionProps) => {
         {/* Footer Info */}
         <div className="mt-16 text-black/70 text-sm">
           <p>Professional AI Assistant • Designed for VCs & HR Professionals</p>
+          {user && (
+            <p className="mt-2">Signed in as: {user.email}</p>
+          )}
         </div>
       </div>
     </div>

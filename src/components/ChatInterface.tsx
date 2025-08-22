@@ -5,6 +5,8 @@ import { ChatMessage } from "./ChatMessage";
 import { TypingIndicator } from "./TypingIndicator";
 import { Send, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Message {
   id: string;
@@ -19,6 +21,7 @@ interface ChatInterfaceProps {
 }
 
 export const ChatInterface = ({ onBack, initialMessage }: ChatInterfaceProps) => {
+  const { user } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -33,11 +36,66 @@ export const ChatInterface = ({ onBack, initialMessage }: ChatInterfaceProps) =>
     scrollToBottom();
   }, [messages]);
 
+  // Load chat history on mount
+  useEffect(() => {
+    if (user) {
+      loadChatHistory();
+    }
+  }, [user]);
+
   useEffect(() => {
     if (initialMessage) {
       handleSendMessage(initialMessage);
     }
   }, [initialMessage]);
+
+  const loadChatHistory = async () => {
+    if (!user) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('chat_messages')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: true });
+
+      if (error) {
+        console.error('Error loading chat history:', error);
+        return;
+      }
+
+      const loadedMessages: Message[] = data.map(msg => ({
+        id: msg.id,
+        content: msg.content,
+        isUser: msg.is_user,
+        timestamp: new Date(msg.created_at),
+      }));
+
+      setMessages(loadedMessages);
+    } catch (error) {
+      console.error('Error loading chat history:', error);
+    }
+  };
+
+  const saveMessageToDatabase = async (content: string, isUser: boolean) => {
+    if (!user) return;
+
+    try {
+      const { error } = await supabase
+        .from('chat_messages')
+        .insert({
+          user_id: user.id,
+          content,
+          is_user: isUser,
+        });
+
+      if (error) {
+        console.error('Error saving message:', error);
+      }
+    } catch (error) {
+      console.error('Error saving message:', error);
+    }
+  };
 
   const handleSendMessage = async (messageContent: string = input) => {
     if (!messageContent.trim()) return;
@@ -53,6 +111,9 @@ export const ChatInterface = ({ onBack, initialMessage }: ChatInterfaceProps) =>
     setInput("");
     setIsLoading(true);
 
+    // Save user message to database
+    await saveMessageToDatabase(messageContent, true);
+
     try {
       // Simulate API call for now - replace with actual endpoint
       const response = await fetch('https://satvik-ai-railway-production.up.railway.app/api/ask', {
@@ -66,27 +127,35 @@ export const ChatInterface = ({ onBack, initialMessage }: ChatInterfaceProps) =>
       }
 
       const data = await response.json();
+      const aiResponse = data.answer || "I'm sorry, I couldn't process that request. I'd recommend booking a call with Satvik to discuss this directly. Schedule at: https://calendly.com/satvikputi/brainstorming";
       
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: data.answer || "I'm sorry, I couldn't process that request. I'd recommend booking a call with Satvik to discuss this directly. Schedule at: https://calendly.com/satvikputi/brainstorming",
+        content: aiResponse,
         isUser: false,
         timestamp: new Date(),
       };
 
       setMessages(prev => [...prev, aiMessage]);
+      
+      // Save AI response to database
+      await saveMessageToDatabase(aiResponse, false);
     } catch (error) {
       console.error('Error:', error);
       
       // Fallback response for demo purposes
+      const fallbackResponse = getDemoResponse(messageContent);
       const fallbackMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: getDemoResponse(messageContent),
+        content: fallbackResponse,
         isUser: false,
         timestamp: new Date(),
       };
 
       setMessages(prev => [...prev, fallbackMessage]);
+      
+      // Save fallback response to database
+      await saveMessageToDatabase(fallbackResponse, false);
       
       toast({
         title: "Connection Issue",
